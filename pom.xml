@@ -18,6 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>naluwan</id>
+            <url>https://repo.naluwan.net/snapshot</url>
+        </repository>
+    </distributionManagement>
+
     <!-- External repositories -->
     <repositories>
         <repository>
