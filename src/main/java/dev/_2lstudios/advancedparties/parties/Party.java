@@ -82,6 +82,11 @@ public class Party {
         return this.data.leader;
     }
 
+    public void setLeader(String name) {
+        this.data.leader = name;
+        this.data.save();
+    }
+
     public List<String> getMembers() {
         return this.data.members;
     }
@@ -127,6 +132,10 @@ public class Party {
 
     public void announcePlayerLeave(String playerName) {
         this.plugin.getPubSub().publish(new PartyLeavePacket(playerName, this.getID()));
+    }
+
+    public void announcePlayerPromoted(String playerName) {
+        this.plugin.getPubSub().publish(new PartyPromotePacket(playerName, this.getID()));
     }
 
     public int getMembersCount() {

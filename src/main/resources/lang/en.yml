@@ -41,6 +41,7 @@ help: |-
   &d/party chat &8- &7Toggle party chat mode.
   &d/party create &8- &7Create a party.
   &d/party disband &8- &7Disolve your party.
+  &d/party promote <player> &8- &7Promote a member as an new leader.
   &d/party info &8- &7Get info about your party.
   &d/party open &8- &7Allow others join without invitation.
   &d/party invite <player> &8- &7Invite a player to your party.
@@ -107,6 +108,13 @@ open:
   not-leader: "&cOnly the leader can toggle public party."
   enabled: "&7You have &aenabled &7public party. Now others can join without invitation."
   disabled: "&7You have &cdisabled &7public party."
+
+promote:
+  usage: "&7Usage: &d/party promote <player>&7."
+  not-leader: "&cOnly the leader can promote others."
+  target-not-in-party: "&cThis player is not in your party."
+  cant-promote-self: "&cYou can't promote yourself."
+  promoted: "&b{player} &eis now the new leader of the party."
 
 warp:
   usage: "&7Usage: &d/party warp&7."
