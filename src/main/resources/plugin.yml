@@ -9,5 +9,5 @@ softdepend: ["PlaceholderAPI", "InterfaceMaker", "Skywars"]
 api-version: 1.13
 commands:
   advancedparties:
-    aliases: ["party"]
+    aliases: ["party", "p"]
     description: "Main parties command"
