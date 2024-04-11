@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import com.dotphin.milkshake.find.FindFilter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import com.sammwy.milkshake.find.FindFilter;
 import dev._2lstudios.advancedparties.AdvancedParties;
 
 public class PartyManager {

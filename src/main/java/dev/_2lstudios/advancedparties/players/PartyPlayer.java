@@ -1,13 +1,6 @@
 package dev._2lstudios.advancedparties.players;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-
-import com.dotphin.milkshake.find.FindFilter;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
+import com.sammwy.milkshake.find.FindFilter;
 import dev._2lstudios.advancedparties.AdvancedParties;
 import dev._2lstudios.advancedparties.commands.CommandExecutor;
 import dev._2lstudios.advancedparties.parties.Party;
@@ -15,12 +8,15 @@ import dev._2lstudios.advancedparties.requests.RequestStatus;
 import dev._2lstudios.advancedparties.utils.PacketUtils;
 import dev._2lstudios.advancedparties.utils.PlayerUtils;
 import dev._2lstudios.advancedparties.utils.ServerUtils;
-
 import lib__net.md_5.bungee.api.chat.BaseComponent;
 import lib__net.md_5.bungee.api.chat.ComponentBuilder;
 import lib__net.md_5.bungee.chat.ComponentSerializer;
-
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 
 public class PartyPlayer extends CommandExecutor {
     private Player bukkitPlayer;
@@ -122,11 +118,11 @@ public class PartyPlayer extends CommandExecutor {
     }
 
     public void sendRawMessage(String component) {
-        this.sendRawMessage(component, (byte) 0);
+        this.sendRawMessage(component, ( byte ) 0);
     }
 
     public void sendActionBar(String text) {
-        this.sendRawMessage(ComponentSerializer.toString(new ComponentBuilder(text).create()), (byte) 2);
+        this.sendRawMessage(ComponentSerializer.toString(new ComponentBuilder(text).create()), ( byte ) 2);
     }
 
     public void sendMessage(BaseComponent component) {
@@ -154,7 +150,7 @@ public class PartyPlayer extends CommandExecutor {
     @Override
     public String formatMessage(String message) {
         String output = super.formatMessage(message);
-        
+
         if (this.getPlugin().hasPlugin("PlaceholderAPI")) {
             output = PlaceholderAPI.setPlaceholders(this.getBukkitPlayer(), output);
         }

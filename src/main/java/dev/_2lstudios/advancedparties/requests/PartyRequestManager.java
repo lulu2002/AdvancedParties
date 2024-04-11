@@ -1,7 +1,7 @@
 package dev._2lstudios.advancedparties.requests;
 
-import com.dotphin.milkshake.find.FindFilter;
 
+import com.sammwy.milkshake.find.FindFilter;
 import dev._2lstudios.advancedparties.AdvancedParties;
 import dev._2lstudios.advancedparties.parties.Party;
 import dev._2lstudios.advancedparties.parties.PartyData;
@@ -29,17 +29,17 @@ public class PartyRequestManager {
 
     public void denyRequest(String party, String target) {
         this.plugin.getCache().set(
-            target.toLowerCase() + "_" + party,
-            this.plugin.getConfig().getInt("requests.cooldown-after-deny"),
-            "denied"
+                target.toLowerCase() + "_" + party,
+                this.plugin.getConfig().getInt("requests.cooldown-after-deny"),
+                "denied"
         );
     }
 
     public void createRequest(String party, String target) {
         this.plugin.getCache().set(
-            target.toLowerCase() + "_" + party,
-            this.plugin.getConfig().getInt("requests.expiration"),
-            "pending"
+                target.toLowerCase() + "_" + party,
+                this.plugin.getConfig().getInt("requests.expiration"),
+                "pending"
         );
     }
 

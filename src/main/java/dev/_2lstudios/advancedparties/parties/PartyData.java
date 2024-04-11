@@ -1,9 +1,10 @@
 package dev._2lstudios.advancedparties.parties;
 
-import java.util.List;
 
-import com.dotphin.classserializer.annotations.Prop;
-import com.dotphin.milkshake.Entity;
+import com.sammwy.classserializer.annotations.Prop;
+import com.sammwy.milkshake.Entity;
+
+import java.util.List;
 
 public class PartyData extends Entity {
     @Prop

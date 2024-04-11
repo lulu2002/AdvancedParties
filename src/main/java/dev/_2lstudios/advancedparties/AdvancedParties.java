@@ -1,17 +1,8 @@
 package dev._2lstudios.advancedparties;
 
-import java.nio.charset.Charset;
-import java.util.Random;
-
-import com.dotphin.milkshake.Milkshake;
-import com.dotphin.milkshake.Provider;
-import com.dotphin.milkshake.Repository;
-
-import io.github.leonardosnt.bungeechannelapi.BungeeChannelApi;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
+import com.sammwy.milkshake.Milkshake;
+import com.sammwy.milkshake.Provider;
+import com.sammwy.milkshake.Repository;
 import dev._2lstudios.advancedparties.api.PartyAPI;
 import dev._2lstudios.advancedparties.api.events.PartyEvent;
 import dev._2lstudios.advancedparties.cache.CacheEngine;
@@ -36,6 +27,13 @@ import dev._2lstudios.advancedparties.players.PartyPlayerManager;
 import dev._2lstudios.advancedparties.requests.PartyRequestManager;
 import dev._2lstudios.advancedparties.tasks.RedisPingTask;
 import dev._2lstudios.advancedparties.tasks.ServerPartySyncTask;
+import io.github.leonardosnt.bungeechannelapi.BungeeChannelApi;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.nio.charset.Charset;
+import java.util.Random;
 
 public class AdvancedParties extends JavaPlugin {
     private ConfigManager configManager;
@@ -74,7 +72,7 @@ public class AdvancedParties extends JavaPlugin {
     }
 
     @Override
-    public void onEnable () {
+    public void onEnable() {
         // Initialize API
         new PartyAPI(this);
 
