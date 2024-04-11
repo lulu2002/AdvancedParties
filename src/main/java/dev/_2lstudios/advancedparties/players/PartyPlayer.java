@@ -68,7 +68,7 @@ public class PartyPlayer extends CommandExecutor {
     }
 
     public void createParty() {
-        Party party = this.getPlugin().getPartyManager().createParty(this.getName());
+        Party party = this.getPlugin().getPartyManager().createParty(this.getLowerName());
         this.setParty(party);
     }
 

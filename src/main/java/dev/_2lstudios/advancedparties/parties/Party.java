@@ -141,6 +141,15 @@ public class Party {
         return this.getMembersCount() >= this.getMaxMembers();
     }
 
+    public boolean isOpen() {
+        return this.data.open;
+    }
+
+    public void setOpen(boolean b) {
+        this.data.open = b;
+        this.data.save();
+    }
+
     public void sendPartyUpdate() {
         this.plugin.getPubSub().publish(new PartyUpdatePacket(this.getID()));
     }
