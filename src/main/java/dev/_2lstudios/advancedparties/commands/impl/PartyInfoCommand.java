@@ -22,7 +22,7 @@ public class PartyInfoCommand extends CommandListener {
             } else {
                 player.sendMessage(
                     player.getI18nMessage("info.as-text")
-                        .replace("{leader}", party.getLeader())
+                        .replace("{leader}", party.getLeader().getName())
                         .replace("{members}", party.getMembersAsString())  
                         .replace("{memberscount}", party.getMembersCount() + "")
                         .replace("{maxmembers}", party.getMaxMembers() + "")

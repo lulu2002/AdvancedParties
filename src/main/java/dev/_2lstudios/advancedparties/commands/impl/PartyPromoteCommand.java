@@ -5,6 +5,7 @@ import dev._2lstudios.advancedparties.commands.Command;
 import dev._2lstudios.advancedparties.commands.CommandContext;
 import dev._2lstudios.advancedparties.commands.CommandListener;
 import dev._2lstudios.advancedparties.parties.Party;
+import dev._2lstudios.advancedparties.parties.PartyMember;
 import dev._2lstudios.advancedparties.players.PartyPlayer;
 
 @Command(
@@ -29,17 +30,19 @@ public class PartyPromoteCommand extends CommandListener {
             return;
         }
 
-        if (!party.hasMember(targetName)) {
+        PartyMember member = party.getMemberByName(targetName);
+
+        if (member == null) {
             player.sendI18nMessage("promote.target-not-in-party");
             return;
         }
 
-        if (party.isLeader(targetName)) {
+        if (party.isLeader(member)) {
             player.sendI18nMessage("promote.cant-promote-self");
             return;
         }
 
-        party.setLeader(targetName);
+        party.setLeader(member);
         party.announcePlayerPromoted(targetName);
     }
 }

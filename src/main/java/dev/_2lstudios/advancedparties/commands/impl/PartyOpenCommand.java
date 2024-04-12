@@ -20,7 +20,7 @@ public class PartyOpenCommand extends CommandListener {
             return;
         }
 
-        if (!party.isLeader(player.getName())){
+        if (!party.isLeader(player)){
             player.sendI18nMessage("open.not-leader");
             return;
         }

@@ -8,10 +8,10 @@ import java.util.List;
 
 public class PartyData extends Entity {
     @Prop
-    public String leader;
+    public PartyMember leader;
 
     @Prop
-    public List<String> members;
+    public List<PartyMember> members;
 
     @Prop
     public boolean open;

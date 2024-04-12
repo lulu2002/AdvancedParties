@@ -7,12 +7,13 @@ import dev._2lstudios.advancedparties.commands.CommandContext;
 import dev._2lstudios.advancedparties.commands.CommandListener;
 import dev._2lstudios.advancedparties.messaging.packets.PartyKickPacket;
 import dev._2lstudios.advancedparties.parties.Party;
+import dev._2lstudios.advancedparties.parties.PartyMember;
 import dev._2lstudios.advancedparties.players.PartyPlayer;
 
 @Command(
-  name = "kick",
-  arguments = { Argument.STRING },
-  minArguments = 1
+        name = "kick",
+        arguments = {Argument.STRING},
+        minArguments = 1
 )
 public class PartyKickCommand extends CommandListener {
     @Override
@@ -36,7 +37,9 @@ public class PartyKickCommand extends CommandListener {
             return;
         }
 
-        if (!party.hasMember(player)) {
+        PartyMember member = party.getMemberByName(target);
+
+        if (member == null) {
             player.sendI18nMessage("kick.not-in-your-party");
             return;
         }
@@ -44,13 +47,10 @@ public class PartyKickCommand extends CommandListener {
         PartyKickEvent event = new PartyKickEvent(party, player, target);
 
         if (ctx.getPlugin().callEvent(event)) {
-            String memberRemoved = party.removeMember(target);
+            PartyMember memberRemoved = party.removeMember(member);
             if (memberRemoved != null) {
                 party.sendPartyUpdate();
-                player.sendMessage(
-                        player.getI18nMessage("kick.kicked")
-                                .replace("{player}", memberRemoved)
-                );
+                player.sendMessage(player.getI18nMessage("kick.kicked").replace("{player}", memberRemoved.getName()));
                 ctx.getPlugin().getPubSub().publish(new PartyKickPacket(party.getID(), memberRemoved));
             }
         }

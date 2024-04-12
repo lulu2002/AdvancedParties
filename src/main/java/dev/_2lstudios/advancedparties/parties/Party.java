@@ -4,12 +4,12 @@ import com.sammwy.milkshake.find.FindFilter;
 import dev._2lstudios.advancedparties.AdvancedParties;
 import dev._2lstudios.advancedparties.messaging.packets.*;
 import dev._2lstudios.advancedparties.players.PartyPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public class Party {
     private AdvancedParties plugin;
@@ -28,30 +28,26 @@ public class Party {
         this.plugin.getPubSub().publish(packet);
     }
 
-    public boolean hasMember(String player) {
-        Iterator<String> iterator = this.data.members.iterator();
-        while (iterator.hasNext()) {
-            String member = iterator.next();
-
-            if (member.equalsIgnoreCase(player)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean hasMember(UUID uuid) {
+        return this.data.members.stream().anyMatch(member -> member.uuid.equals(uuid));
     }
 
     public boolean hasMember(PartyPlayer player) {
-        return this.hasMember(player.getBukkitPlayer().getName());
+        return this.hasMember(player.getBukkitPlayer().getUniqueId());
     }
 
-    public String removeMember(String player) {
-        Iterator<String> iterator = this.data.members.iterator();
-        String member = null;
+    public PartyMember removeMember(PartyMember member) {
+        return this.removeMember(member.uuid);
+    }
+
+    public PartyMember removeMember(UUID uuid) {
+        Iterator<PartyMember> iterator = this.data.members.iterator();
+        PartyMember member = null;
 
         while (iterator.hasNext()) {
             member = iterator.next();
 
-            if (member.equalsIgnoreCase(player)) {
+            if (member.uuid.equals(uuid)) {
                 iterator.remove();
                 break;
             }
@@ -61,55 +57,62 @@ public class Party {
         return member;
     }
 
-    public String removeMember(PartyPlayer player) {
-        return this.removeMember(player.getBukkitPlayer().getName());
+    public PartyMember removeMember(PartyPlayer player) {
+        return this.removeMember(player.getBukkitPlayer().getUniqueId());
     }
 
-    public void addMember(String player) {
-        this.data.members.add(player);
+    public void addMember(PartyMember partyMember) {
+        this.data.members.add(partyMember);
         this.data.save();
     }
 
     public void addMember(PartyPlayer player) {
-        this.addMember(player.getBukkitPlayer().getName());
+        this.addMember(PartyMember.fromPartyPlayer(player));
     }
 
     public String getID() {
         return this.data.getID();
     }
 
-    public String getLeader() {
+    public PartyMember getLeader() {
         return this.data.leader;
     }
 
-    public void setLeader(String name) {
-        this.data.leader = name;
+    public void setLeader(PartyMember member) {
+        this.data.leader = member;
         this.data.save();
     }
 
-    public List<String> getMembers() {
+    public PartyMember getMemberByUUID(UUID uuid) {
+        return this.data.members.stream().filter(member -> member.uuid.equals(uuid)).findFirst().orElse(null);
+    }
+
+    public PartyMember getMemberByName(String name) {
+        return this.data.members.stream().filter(member -> member.name.equals(name)).findFirst().orElse(null);
+    }
+
+    public List<PartyMember> getMembers() {
         return this.data.members;
     }
 
     public String getMembersAsString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
-        for (String member : this.getMembers()) {
-            if (result != "") {
-                result += ", ";
-            }
+        for (PartyMember member : this.getMembers()) {
+            if (!result.toString().isEmpty())
+                result.append(", ");
 
-            result += member;
+            result.append(member.getName());
         }
 
-        return result;
+        return result.toString();
     }
 
     public List<PartyPlayer> getPlayers() {
         List<PartyPlayer> result = new ArrayList<>();
 
-        for (String member : this.data.members) {
-            Player bukkitPlayer = Bukkit.getPlayerExact(member);
+        for (PartyMember member : this.data.members) {
+            Player bukkitPlayer = member.asBukkitPlayer();
             if (bukkitPlayer != null && bukkitPlayer.isOnline()) {
                 result.add(this.plugin.getPlayerManager().getPlayer(bukkitPlayer));
             }
@@ -118,12 +121,12 @@ public class Party {
         return result;
     }
 
-    public boolean isLeader(String playerName) {
-        return this.getLeader().equalsIgnoreCase(playerName);
+    public boolean isLeader(PartyMember member) {
+        return this.data.leader.equals(member);
     }
 
     public boolean isLeader(PartyPlayer player) {
-        return this.isLeader(player.getName());
+        return this.isLeader(PartyMember.fromPartyPlayer(player));
     }
 
     public void announcePlayerJoin(String playerName) {

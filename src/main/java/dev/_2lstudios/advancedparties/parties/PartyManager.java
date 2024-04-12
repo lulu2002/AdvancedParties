@@ -36,11 +36,11 @@ public class PartyManager {
         return new Party(plugin, data);
     }
 
-    public Party createParty(String leader) {
+    public Party createParty(PartyMember owner) {
         PartyData data = new PartyData();
-        data.leader = leader;
+        data.leader = owner;
         data.members = new ArrayList<>();
-        data.members.add(leader);
+        data.members.add(owner);
         data.open = false;
         data.save();
 

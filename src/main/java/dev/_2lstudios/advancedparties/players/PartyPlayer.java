@@ -4,6 +4,7 @@ import com.sammwy.milkshake.find.FindFilter;
 import dev._2lstudios.advancedparties.AdvancedParties;
 import dev._2lstudios.advancedparties.commands.CommandExecutor;
 import dev._2lstudios.advancedparties.parties.Party;
+import dev._2lstudios.advancedparties.parties.PartyMember;
 import dev._2lstudios.advancedparties.requests.RequestStatus;
 import dev._2lstudios.advancedparties.utils.PacketUtils;
 import dev._2lstudios.advancedparties.utils.PlayerUtils;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.util.UUID;
 
 public class PartyPlayer extends CommandExecutor {
     private Player bukkitPlayer;
@@ -35,6 +37,10 @@ public class PartyPlayer extends CommandExecutor {
 
     public String getName() {
         return this.bukkitPlayer.getName();
+    }
+
+    public UUID getUUID() {
+        return this.bukkitPlayer.getUniqueId();
     }
 
     public String getLowerName() {
@@ -68,7 +74,7 @@ public class PartyPlayer extends CommandExecutor {
     }
 
     public void createParty() {
-        Party party = this.getPlugin().getPartyManager().createParty(this.getLowerName());
+        Party party = this.getPlugin().getPartyManager().createParty(PartyMember.fromPlayer(this.bukkitPlayer));
         this.setParty(party);
     }
 
