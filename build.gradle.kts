@@ -5,33 +5,19 @@
 plugins {
     `java-library`
     `maven-publish`
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "1.9.23"
 }
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    }
-
-    maven {
-        url = uri("https://repo.imanity.dev/imanity-libraries/")
-    }
-
-    maven {
-        url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    }
-
-    maven {
-        url = uri("https://nexuslite.gcnt.net/repos/gcnt")
-    }
-
-    maven {
-        url = uri("https://repo.codemc.org/repository/maven-public/")
-    }
-
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.imanity.dev/imanity-libraries/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://nexuslite.gcnt.net/repos/gcnt")
+    maven("https://repo.codemc.org/repository/maven-public/")
+    maven("https://repo.maven.apache.org/maven2/")
+    mavenCentral()
 }
 
 dependencies {
@@ -44,12 +30,13 @@ dependencies {
     compileOnly("dev._2lstudios:InterfaceMaker:1.0.0")
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("net.gcnt:skywarsreloaded:5.6.1")
+    implementation("com.google.inject:guice:5.0.1")
+    compileOnly("org.mcwonderland:KotlinLib:1.9.23b1")
 }
 
 group = "dev._2lstudios"
 version = "0.1.0"
 description = "AdvancedParties"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
     publications.create<MavenPublication>("maven") {

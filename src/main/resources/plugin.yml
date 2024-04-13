@@ -4,7 +4,7 @@ author: ${author}
 main: ${mainClass}
 version: ${version}
 url: ${url}
-depend: ["Milkshake-Bukkit", "Jedis"]
+depend: ["Milkshake-Bukkit", "Jedis", "KotlinLib"]
 softdepend: ["PlaceholderAPI", "InterfaceMaker", "Skywars"]
 api-version: 1.13
 commands:
