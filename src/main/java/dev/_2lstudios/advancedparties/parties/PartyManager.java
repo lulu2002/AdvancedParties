@@ -1,50 +1,67 @@
 package dev._2lstudios.advancedparties.parties;
 
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import dev._2lstudios.advancedparties.messaging.RedisPubSub;
+import dev._2lstudios.advancedparties.players.PartyPlayerManager;
+import dev._2lstudios.advancedparties.players.PartyPlayerRepository;
+import org.bukkit.configuration.Configuration;
 
-import com.sammwy.milkshake.find.FindFilter;
-import dev._2lstudios.advancedparties.AdvancedParties;
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class PartyManager {
-    private AdvancedParties plugin;
+    private PartyPlayerRepository playerRepository;
+    private PartyRepository partyRepository;
+    private PartyPlayerManager playerManager;
+    private RedisPubSub pubSub;
+    private Configuration config;
+
     private LoadingCache<String, Party> cache;
 
-    public PartyManager(AdvancedParties plugin) {
-        this.plugin = plugin;
+    public PartyManager(
+            PartyPlayerRepository playerRepository,
+            PartyRepository partyRepository,
+            PartyPlayerManager playerManager,
+            RedisPubSub pubSub,
+            Configuration config
+    ) {
+        this.playerRepository = playerRepository;
+        this.partyRepository = partyRepository;
+        this.playerManager = playerManager;
+        this.pubSub = pubSub;
+        this.config = config;
         this.cache = CacheBuilder.newBuilder()
-            .expireAfterAccess(plugin.getConfig().getInt("cache.time-after-read"), TimeUnit.SECONDS)
-            .expireAfterWrite(plugin.getConfig().getInt("cache.time-after-write"), TimeUnit.SECONDS)
-            .build(new CacheLoader<String, Party>() {
-                @Override
-                public Party load(final String id) throws Exception {
-                    return lookupParty(id);
-                }
-            });
+                .expireAfterAccess(config.getInt("cache.time-after-read"), TimeUnit.SECONDS)
+                .expireAfterWrite(config.getInt("cache.time-after-write"), TimeUnit.SECONDS)
+                .build(new CacheLoader<String, Party>() {
+                    @Override
+                    public Party load(final String id) {
+                        return lookupParty(id);
+                    }
+                });
     }
 
     public Party lookupParty(String id) {
-        PartyData data = this.plugin.getPartyRepository().findByID(id);
+        PartyData data = partyRepository.findDataByID(id);
         if (data == null) {
             return null;
         }
-        return new Party(plugin, data);
+        return constructPartyWithData(data);
     }
 
     public Party createParty(PartyMember owner) {
-        PartyData data = new PartyData();
-        data.leader = owner;
+        PartyData data = new PartyData(UUID.randomUUID().toString(), owner);
         data.members = new ArrayList<>();
         data.members.add(owner);
         data.open = false;
-        data.save();
+        data.maxMembers = config.getInt("parties.max-members");
+        partyRepository.savePartyData(data);
 
-        Party party = new Party(this.plugin, data);
+        Party party = constructPartyWithData(data);
         this.cache.put(party.getID(), party);
         return party;
     }
@@ -67,11 +84,23 @@ public class PartyManager {
     }
 
     public Party getPartyByLeader(String leaderName) {
-        PartyData data = plugin.getPartyRepository().findOne(new FindFilter("leader", leaderName.toLowerCase()));
+        PartyData data = partyRepository.findDataByOwnerName(leaderName);
 
         if (data == null)
             return null;
 
-        return new Party(plugin, data);
+        return constructPartyWithData(data);
+    }
+
+    private Party constructPartyWithData(PartyData data) {
+        return new Party(
+                this.playerRepository,
+                this.partyRepository,
+                this.playerManager,
+                this.pubSub,
+                data
+        );
     }
 }
+
+

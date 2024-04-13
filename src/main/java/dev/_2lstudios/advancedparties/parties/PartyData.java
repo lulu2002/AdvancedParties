@@ -1,18 +1,22 @@
 package dev._2lstudios.advancedparties.parties;
 
 
-import com.sammwy.classserializer.annotations.Prop;
-import com.sammwy.milkshake.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
-public class PartyData extends Entity {
-    @Prop
+@AllArgsConstructor
+public class PartyData {
+    @Getter
+    private String id;
     public PartyMember leader;
-
-    @Prop
     public List<PartyMember> members;
+    public int maxMembers;
+    public boolean open = false;
 
-    @Prop
-    public boolean open;
+    public PartyData(String id, PartyMember leader) {
+        this.id = id;
+        this.leader = leader;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev._2lstudios.advancedparties.interfaces.items.PageOpenerItem;
 import dev._2lstudios.advancedparties.interfaces.items.PartyHeadItem;
+import dev._2lstudios.advancedparties.parties.PartyMember;
 import dev._2lstudios.advancedparties.players.PartyPlayer;
 import dev._2lstudios.interfacemaker.interfaces.InterfaceItem;
 import dev._2lstudios.interfacemaker.interfaces.contexts.MenuBuildContext;
@@ -22,15 +23,15 @@ public class PartyMenu extends PageMenu {
 
     @Override
     public void onBuild(MenuBuildContext context) {
-        List<String> playerNames = partyPlayer.getParty().getMembers();
+        List<PartyMember> playerNames = partyPlayer.getParty().getMembers();
         InterfaceItem[] heads = new InterfaceItem[MAX_ENTRY_COUNT];
         int playerNamesSize = playerNames.size();
         int page = getPage();
         int skip = Math.max(0, ((page - 1) * MAX_ENTRY_COUNT) - 1);
 
         for (int i = skip; i < MAX_ENTRY_COUNT && i < playerNamesSize; i++) {
-            String playerName = playerNames.get(i);
-            InterfaceItem item = new PartyHeadItem(partyPlayer, playerName);
+            PartyMember member = playerNames.get(i);
+            InterfaceItem item = new PartyHeadItem(partyPlayer, member.getName());
 
             heads[i] = item;
         }

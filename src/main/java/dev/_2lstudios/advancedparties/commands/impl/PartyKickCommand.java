@@ -5,6 +5,7 @@ import dev._2lstudios.advancedparties.commands.Argument;
 import dev._2lstudios.advancedparties.commands.Command;
 import dev._2lstudios.advancedparties.commands.CommandContext;
 import dev._2lstudios.advancedparties.commands.CommandListener;
+import dev._2lstudios.advancedparties.messaging.data.PartyMemberMessage;
 import dev._2lstudios.advancedparties.messaging.packets.PartyKickPacket;
 import dev._2lstudios.advancedparties.parties.Party;
 import dev._2lstudios.advancedparties.parties.PartyMember;
@@ -51,7 +52,7 @@ public class PartyKickCommand extends CommandListener {
             if (memberRemoved != null) {
                 party.sendPartyUpdate();
                 player.sendMessage(player.getI18nMessage("kick.kicked").replace("{player}", memberRemoved.getName()));
-                ctx.getPlugin().getPubSub().publish(new PartyKickPacket(party.getID(), memberRemoved));
+                ctx.getPlugin().getPubSub().publish(new PartyKickPacket(party.getID(), PartyMemberMessage.fromMember(memberRemoved)));
             }
         }
     }
