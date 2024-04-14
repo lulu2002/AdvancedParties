@@ -7,9 +7,7 @@ import dev._2lstudios.advancedparties.interfaces.menus.PartyMenu;
 import dev._2lstudios.advancedparties.parties.Party;
 import dev._2lstudios.advancedparties.players.PartyPlayer;
 
-@Command(
-  name = "info"
-)
+@Command(name = "list", alias = "info")
 public class PartyInfoCommand extends CommandListener {
     @Override
     public void onExecuteByPlayer(CommandContext ctx) {
@@ -23,7 +21,7 @@ public class PartyInfoCommand extends CommandListener {
                 player.sendMessage(
                     player.getI18nMessage("info.as-text")
                         .replace("{leader}", party.getLeader())
-                        .replace("{members}", party.getMembersAsString())  
+                        .replace("{members}", party.getMembersAsString())
                         .replace("{memberscount}", party.getMembersCount() + "")
                         .replace("{maxmembers}", party.getMaxMembers() + "")
                 );

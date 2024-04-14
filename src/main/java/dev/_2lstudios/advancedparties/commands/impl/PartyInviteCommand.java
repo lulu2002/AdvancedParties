@@ -47,22 +47,18 @@ public class PartyInviteCommand extends CommandListener {
                 OfflinePlayer target = new OfflinePlayer(plugin, targetName);
                 target.download();
 
-                if (target.isInParty()) {
-                    player.sendI18nMessage("invite.target-already-in-party");
-                } else {
-                    player.sendMessage(
+                player.sendMessage(
                         player.getI18nMessage("invite.sent")
-                            .replace("{target}", targetName)
-                    );
+                                .replace("{target}", targetName)
+                );
 
-                    PartyInvitePacket packet = new PartyInvitePacket(player.getName(), targetName, party.getID());
-                    PartyInviteEvent event = new PartyInviteEvent(packet, player);
+                PartyInvitePacket packet = new PartyInvitePacket(player.getName(), targetName, party.getID());
+                PartyInviteEvent event = new PartyInviteEvent(packet, player);
 
-                    if (plugin.callEvent(event)) {
-                        plugin.getPubSub().publish(packet);
-                        plugin.getRequestManager().createRequest(party, targetName);
-                        party.sendPartyUpdate();
-                    }
+                if (plugin.callEvent(event)) {
+                    plugin.getPubSub().publish(packet);
+                    plugin.getRequestManager().createRequest(party, targetName);
+                    party.sendPartyUpdate();
                 }
             }
         } else {
