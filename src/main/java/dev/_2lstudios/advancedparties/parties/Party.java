@@ -83,7 +83,7 @@ public class Party {
     }
 
     public void setLeader(String name) {
-        this.data.leader = name;
+        this.data.leader = name.toLowerCase();
         this.data.save();
     }
 

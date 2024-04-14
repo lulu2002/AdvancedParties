@@ -38,7 +38,7 @@ public class PartyManager {
 
     public Party createParty(String leader) {
         PartyData data = new PartyData();
-        data.leader = leader;
+        data.leader = leader.toLowerCase();
         data.members = new ArrayList<>();
         data.members.add(leader);
         data.open = false;
